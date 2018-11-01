@@ -2,7 +2,7 @@ require 'docking_station'
 
 describe DockingStation do
   subject { DockingStation.new }
-  let(:bike) {Bike.new}
+  let(:bike) { double(:bike) }
 
   describe 'initialization' do
     it 'defaults capacity' do
@@ -27,23 +27,21 @@ describe DockingStation do
 
   describe '#release_bike' do
     it 'releases working bikes' do
-      subject.dock(bike)
+      subject.dock(double(:bike, broken?: false))
       expect(subject.release_bike).not_to be_broken
     end
     it 'raises an error when there are no bikes available' do
       expect { subject.release_bike }.to raise_error('No bikes available')
     end
     it 'fails to release a broken bike' do
-      bike = Bike.new
-      bike.report_broken
-      subject.dock(bike)
+      subject.dock(double(:bike, broken?: true))
       expect { (subject.release_bike) }.to raise_error 'No working bikes.'
     end
   end
 
   describe '#any_working_bikes?' do
     it 'does docking station contain a working bike?' do
-      subject.dock(Bike.new)
+      subject.dock(double(:bike, broken?: false))
       expect(subject.any_working_bikes?).to eq(true)
     end
   end

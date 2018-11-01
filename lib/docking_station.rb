@@ -25,9 +25,7 @@ class DockingStation
 
   def any_working_bikes?
     @bikes.each do |bike|
-      if !bike.broken?
-        return true
-      end
+       return true if !bike.broken?
     end
     return false
   end
